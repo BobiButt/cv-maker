@@ -18,7 +18,6 @@ export default function PreviewPane() {
   }, [settings.pageSize, settings.printMargin]);
 
   useEffect(() => {
-    // Load Google Font dynamically
     const id = 'cv-google-font';
     let el = document.getElementById(id) as HTMLLinkElement | null;
     const family = theme.fontFamily.replace(/ /g, '+');
@@ -34,22 +33,24 @@ export default function PreviewPane() {
   const Template = getTemplate(theme.template).component;
 
   return (
-    <main className="flex-1 overflow-y-auto bg-slate-200 py-10 flex justify-center">
-      <div
-        id="cv-preview"
-        dir={settings.rtl ? 'rtl' : 'ltr'}
-        className="bg-white shadow-xl"
-        style={{
-          width: '210mm',
-          minHeight: '297mm',
-          padding: '16mm 18mm',
-          fontFamily: `"${theme.fontFamily}", system-ui, sans-serif`,
-          fontSize: `${theme.fontSize}px`,
-          lineHeight: theme.lineHeight,
-          color: theme.textColor,
-        }}
-      >
-        <Template cv={cv} />
+    <main className="flex-1 overflow-auto bg-slate-200 py-6 sm:py-10 flex justify-center">
+      <div className="origin-top scale-[0.42] sm:scale-[0.6] md:scale-[0.8] lg:scale-100">
+        <div
+          id="cv-preview"
+          dir={settings.rtl ? 'rtl' : 'ltr'}
+          className="bg-white shadow-xl"
+          style={{
+            width: '210mm',
+            minHeight: '297mm',
+            padding: '16mm 18mm',
+            fontFamily: `"${theme.fontFamily}", system-ui, sans-serif`,
+            fontSize: `${theme.fontSize}px`,
+            lineHeight: theme.lineHeight,
+            color: theme.textColor,
+          }}
+        >
+          <Template cv={cv} />
+        </div>
       </div>
     </main>
   );

@@ -8,6 +8,9 @@
   body * { visibility: hidden; }
   #cv-preview, #cv-preview * { visibility: visible; }
 
+  /* Reset any mobile scaling so the PDF is full size */
+  * { transform: none !important; }
+
   #cv-preview {
     position: absolute;
     left: 0;

@@ -49,22 +49,25 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <header className="bg-white border-b border-slate-200 h-14 flex items-center px-6 gap-3">
-        <Link to="/" className="text-slate-500 hover:text-slate-800">
+      <header className="bg-white border-b border-slate-200 h-14 flex items-center px-3 sm:px-6 gap-2 sm:gap-3">
+        <Link to="/" className="text-slate-500 hover:text-slate-800 shrink-0">
           <Home className="w-4 h-4" />
         </Link>
-        <h1 className="font-semibold text-slate-800">{t('dashboard.title')}</h1>
+        <h1 className="font-semibold text-slate-800 truncate">
+          {t('dashboard.title')}
+        </h1>
         <div className="flex-1" />
         <LangSwitcher />
         <button
           onClick={createNew}
-          className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 inline-flex items-center gap-1.5"
+          className="px-3 py-1.5 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 inline-flex items-center gap-1.5 shrink-0"
         >
-          <Plus className="w-4 h-4" /> {t('btn.newCv')}
+          <Plus className="w-4 h-4" />
+          <span className="hidden sm:inline">{t('btn.newCv')}</span>
         </button>
       </header>
 
-      <div className="max-w-5xl mx-auto p-6">
+      <div className="max-w-5xl mx-auto p-4 sm:p-6">
         <div className="relative mb-4">
           <Search className="w-4 h-4 text-slate-400 absolute start-3 top-1/2 -translate-y-1/2" />
           <input
@@ -76,8 +79,8 @@ export default function DashboardPage() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="text-center py-20 text-slate-500">
-            <FileText className="w-12 h-12 mx-auto mb-3 text-slate-300" />
+          <div className="text-center py-16 sm:py-20 text-slate-500 px-4">
+            <FileText className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 text-slate-300" />
             <p>{t('dashboard.empty')}</p>
             <button
               onClick={createNew}
@@ -88,7 +91,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {filtered.map((rec) => (
             <div
               key={rec.id}
@@ -106,7 +109,7 @@ export default function DashboardPage() {
                   {new Date(rec.updatedAt).toLocaleString()}
                 </div>
               </button>
-              <div className="flex gap-1 mt-3 opacity-0 group-hover:opacity-100 transition">
+              <div className="flex gap-1 mt-3 sm:opacity-0 sm:group-hover:opacity-100 transition">
                 <button
                   onClick={() => duplicate(rec.id)}
                   className="p-1.5 hover:bg-slate-100 rounded"

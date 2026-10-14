@@ -30,7 +30,7 @@ export default function LandingPage() {
             My CVs
           </Link>
           <a
-            href="https://github.com"
+            href="https://github.com/BobiButt/cv-maker"
             target="_blank"
             rel="noreferrer"
             className="px-6 py-3 bg-white text-slate-700 border border-slate-200 rounded-lg font-medium hover:bg-slate-50 transition inline-flex items-center gap-2"

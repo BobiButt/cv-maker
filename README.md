@@ -16,13 +16,12 @@ Most CV builders want your email, hide PDF export behind a paywall, or upload yo
 
 ## Screenshots
 
-<!--
+
 TODO: add screenshots here, e.g.
 ![Editor with live preview](public/screenshot-editor.png)
 ![Dashboard](public/screenshot-dashboard.png)
--->
 
-_Coming soon._
+
 
 ## Features
 
@@ -158,4 +157,4 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
-Made by **Bobi Butt** — [GitHub](https://github.com/your-username)
+Made by **Bobi Butt** — [GitHub](https://github.com/BobiButt)

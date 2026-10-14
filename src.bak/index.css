@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+#cv-preview {
+  box-sizing: border-box;
+}
+
+@media print {
+  body * { visibility: hidden; }
+  #cv-preview, #cv-preview * { visibility: visible; }
+
+  #cv-preview {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 210mm !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  section, h2, h3 { break-inside: avoid; }
+  h2 { break-after: avoid; }
+  a { color: inherit; text-decoration: none; }
+}

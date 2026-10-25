@@ -45,7 +45,7 @@ export default function EditorPage() {
 
   return (
     <div
-      className="h-screen flex flex-col bg-slate-100 relative"
+      className="cv-app h-screen flex flex-col bg-slate-100 relative"
       onDragOver={(e) => {
         e.preventDefault();
         setDragging(true);
@@ -53,7 +53,7 @@ export default function EditorPage() {
       onDragLeave={() => setDragging(false)}
       onDrop={onDrop}
     >
-      <div className="h-9 bg-slate-900 text-white flex items-center px-4 text-xs gap-3 shrink-0">
+      <div className="cv-chrome h-9 bg-slate-900 text-white flex items-center px-4 text-xs gap-3 shrink-0">
         <Link
           to="/dashboard"
           className="inline-flex items-center gap-1 hover:underline"
@@ -65,7 +65,7 @@ export default function EditorPage() {
       <Topbar />
 
       {/* Mobile view switcher */}
-      <div className="lg:hidden flex bg-white border-b border-slate-200 shrink-0">
+      <div className="cv-chrome lg:hidden flex bg-white border-b border-slate-200 shrink-0">
         <button
           onClick={() => setMobileView('edit')}
           className={`flex-1 py-2 text-sm font-medium inline-flex items-center justify-center gap-1.5 ${
@@ -88,9 +88,9 @@ export default function EditorPage() {
         </button>
       </div>
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="cv-print-row flex-1 flex overflow-hidden">
         <div
-          className={`${
+          className={`cv-chrome ${
             mobileView === 'edit' ? 'flex' : 'hidden'
           } lg:flex w-full lg:w-auto shrink-0`}
         >
@@ -98,7 +98,7 @@ export default function EditorPage() {
         </div>
 
         <div
-          className={`${
+          className={`cv-print-column ${
             mobileView === 'preview' ? 'flex' : 'hidden'
           } lg:flex flex-1 overflow-hidden`}
         >

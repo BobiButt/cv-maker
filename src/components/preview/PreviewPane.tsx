@@ -33,8 +33,8 @@ export default function PreviewPane() {
   const Template = getTemplate(theme.template).component;
 
   return (
-    <main className="flex-1 overflow-auto bg-slate-200 py-6 sm:py-10 flex justify-center">
-      <div className="origin-top scale-[0.42] sm:scale-[0.6] md:scale-[0.8] lg:scale-100">
+    <main className="cv-print-main flex-1 overflow-auto bg-slate-200 py-6 sm:py-10 flex justify-center">
+      <div className="cv-preview-scale">
         <div
           id="cv-preview"
           dir={settings.rtl ? 'rtl' : 'ltr'}

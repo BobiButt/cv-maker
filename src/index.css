@@ -4,24 +4,97 @@
   box-sizing: border-box;
 }
 
+/*
+ * Preview scaling.
+ *
+ * The CV sheet is always laid out at real page size (210mm x 297mm). On small
+ * screens it is scaled down for display only. `zoom` is used where supported
+ * because it scales the layout box too (no phantom height left behind, so the
+ * sheet stays top-aligned and the page is not followed by blank space);
+ * browsers without `zoom` fall back to the `scale` property.
+ */
+.cv-preview-scale {
+  --cv-zoom: 0.42;
+  transform-origin: top center;
+  scale: var(--cv-zoom);
+}
+
+@supports (zoom: 1) {
+  .cv-preview-scale {
+    scale: none;
+    zoom: var(--cv-zoom);
+  }
+}
+
+@media (min-width: 640px) {
+  .cv-preview-scale { --cv-zoom: 0.6; }
+}
+
+@media (min-width: 768px) {
+  .cv-preview-scale { --cv-zoom: 0.8; }
+}
+
+@media (min-width: 1024px) {
+  .cv-preview-scale { --cv-zoom: 1; }
+}
+
 @media print {
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  /* Safety net: anything that is not the CV sheet stays invisible. */
   body * { visibility: hidden; }
   #cv-preview, #cv-preview * { visibility: visible; }
 
-  /* Reset any mobile scaling so the PDF is full size */
-  * { transform: none !important; }
+  /* App chrome must not take up space, or the sheet is pushed onto a new page. */
+  .cv-chrome { display: none !important; }
 
-  #cv-preview {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 210mm !important;
-    min-height: auto !important;
+  /*
+   * Flatten the preview's ancestor chain. The preview lives inside responsive
+   * wrappers (`hidden lg:flex`, `overflow-hidden`, viewport-height columns…)
+   * that are laid out against the *paper* width when printing — A4 is ~794 CSS
+   * px, below the `lg` breakpoint — which used to collapse the sheet to
+   * `display: none` and print an empty page.
+   */
+  .cv-app,
+  .cv-print-row,
+  .cv-print-column,
+  .cv-print-main,
+  .cv-preview-scale {
+    display: block !important;
+    position: static !important;
+    inset: auto !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    min-height: 0 !important;
+    overflow: visible !important;
     padding: 0 !important;
     margin: 0 !important;
+    transform: none !important;
+    scale: 1 !important;
+    zoom: 1 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* The sheet itself: fills the printable area, no screen-only chrome. */
+  #cv-preview {
+    position: static !important;
+    width: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     box-shadow: none !important;
     background: #fff !important;
-    color: #000 !important;
+    /* Keep accent colours, rules and chips looking like the preview. */
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 
   section, h2, h3 { break-inside: avoid; }

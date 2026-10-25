@@ -1,6 +1,7 @@
 import type { CV } from '../types/cv';
 import {
   ContactLine,
+  PhotoCircle,
   SectionHeading,
   getVisibleSections,
   renderItemBody,
@@ -20,6 +21,11 @@ export default function Modern({ cv }: { cv: CV }) {
           marginBottom: 20,
         }}
       >
+        {cv.settings.showPhoto && personal.photo && (
+          <div style={{ marginBottom: 10 }}>
+            <PhotoCircle cv={cv} size={70} />
+          </div>
+        )}
         <h1 style={{ fontSize: '2em', fontWeight: 800, margin: 0 }}>
           {personal.fullName || 'Your Name'}
         </h1>

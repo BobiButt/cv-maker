@@ -1,6 +1,7 @@
 import type { CV } from '../types/cv';
 import {
   ContactLine,
+  PhotoCircle,
   getVisibleSections,
   renderItemBody,
   SkillChips,
@@ -13,6 +14,11 @@ export default function Minimal({ cv }: { cv: CV }) {
   return (
     <>
       <header style={{ marginBottom: 20 }}>
+        {cv.settings.showPhoto && personal.photo && (
+          <div style={{ marginBottom: 8, textAlign: 'center' }}>
+            <PhotoCircle cv={cv} size={70} />
+          </div>
+        )}
         <h1 style={{ fontSize: '1.8em', fontWeight: 600, margin: 0 }}>
           {personal.fullName || 'Your Name'}
         </h1>

@@ -9,7 +9,29 @@ export function formatRange(start: string, end: string, current: boolean) {
 export function ContactLine({ cv }: { cv: CV }) {
   const p = cv.personal;
   const parts = [p.email, p.phone, p.location, p.website].filter(Boolean);
-  return <span>{parts.join('  •  ')}</span>;
+  const socialLinks = p.links.filter((l) => l.url).map((l) => (
+    <a
+      key={l.id}
+      href={l.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        color: '#666',
+        fontSize: '0.9em',
+        textDecoration: 'underline',
+        marginLeft: '6px',
+      }}
+    >
+      {l.label || l.url}
+    </a>
+  ));
+  return (
+    <span>
+      {parts.join('  •  ')}
+      {socialLinks.length > 0 && parts.length > 0 && <span>  •  </span>}
+      {socialLinks}
+    </span>
+  );
 }
 
 export function SectionHeading({

@@ -1,5 +1,5 @@
 import type { CV } from '../types/cv';
-import { getVisibleSections, renderItemBody } from './shared';
+import { PhotoCircle, getVisibleSections, renderItemBody } from './shared';
 
 export default function AtsPlain({ cv }: { cv: CV }) {
   const { personal, theme } = cv;
@@ -7,17 +7,26 @@ export default function AtsPlain({ cv }: { cv: CV }) {
   const contact = [personal.email, personal.phone, personal.location, personal.website]
     .filter(Boolean)
     .join(' | ');
+  const socialLinks = personal.links.filter((l) => l.url).map((l) => `${l.label || l.url}: ${l.url}`).join(' | ');
 
   return (
     <>
       <header style={{ marginBottom: 14 }}>
+        {cv.settings.showPhoto && personal.photo && (
+          <div style={{ marginBottom: 6, textAlign: 'center' }}>
+            <PhotoCircle cv={cv} size={60} />
+          </div>
+        )}
         <h1 style={{ fontSize: '1.6em', fontWeight: 700, margin: 0 }}>
           {personal.fullName || 'Your Name'}
         </h1>
         {personal.jobTitle && (
           <div style={{ fontSize: '1em' }}>{personal.jobTitle}</div>
         )}
-        <div style={{ marginTop: 4, fontSize: '0.9em' }}>{contact}</div>
+        <div style={{ marginTop: 4, fontSize: '0.9em' }}>
+          {contact}
+          {socialLinks ? ` | ${socialLinks}` : ''}
+        </div>
       </header>
 
       {sections.map((s) => (

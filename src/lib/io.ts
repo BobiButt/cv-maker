@@ -43,6 +43,10 @@ export function buildHTML(cv: CV) {
   const contact = [personal.email, personal.phone, personal.location, personal.website]
     .filter(Boolean)
     .join(' • ');
+  const socialLinks = personal.links
+    .filter((l) => l.url)
+    .map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline;">${esc(l.label || l.url)}</a>`)
+    .join(' • ');
 
   const sectionHTML = visible
     .map((s) => {
@@ -142,6 +146,7 @@ export function buildHTML(cv: CV) {
   h1 { margin: 0; font-size: 1.8em; color: ${theme.accent}; }
   .job { color: #555; font-size: 1.05em; }
   .contact { margin-top: 6px; color: #666; font-size: .9em; }
+  .page header img { margin-bottom: 8px; }
   section { margin-bottom: ${theme.spacing * 16}px; }
   h2 { font-size: 1.1em; color: ${theme.accent}; text-transform: uppercase; letter-spacing: .05em; margin: 0 0 8px; }
   .item { margin-bottom: 8px; }
@@ -158,12 +163,13 @@ export function buildHTML(cv: CV) {
 </style>
 </head>
 <body>
-<div class="page">
-  <header>
-    <h1>${esc(personal.fullName || 'Your Name')}</h1>
-    ${personal.jobTitle ? `<div class="job">${esc(personal.jobTitle)}</div>` : ''}
-    ${contact ? `<div class="contact">${esc(contact)}</div>` : ''}
-  </header>
+  <div class="page">
+    <header style="text-align:center;">
+      ${personal.photo ? `<img src="${esc(personal.photo)}" alt="Profile" style="width:80px;height:80px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 10px;" />` : ''}
+      <h1>${esc(personal.fullName || 'Your Name')}</h1>
+      ${personal.jobTitle ? `<div class="job">${esc(personal.jobTitle)}</div>` : ''}
+      ${contact || socialLinks ? `<div class="contact">${esc(contact)}${contact && socialLinks ? ' • ' : ''}${socialLinks}</div>` : ''}
+    </header>
   ${sectionHTML}
 </div>
 <script type="application/json" id="cv-data">${embedded}</script>

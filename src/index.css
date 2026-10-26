@@ -97,7 +97,9 @@
     -webkit-print-color-adjust: exact;
   }
 
-  section, h2, h3 { break-inside: avoid; }
-  h2 { break-after: avoid; }
+  /* When one-page fit is active, sections can break naturally so nothing
+   * gets pushed to page 2 just because it doesn't fit in remaining space. */
+  section, h2, h3 { break-inside: auto; }
+  h2 { break-after: auto; }
   a { color: inherit; text-decoration: none; }
 }

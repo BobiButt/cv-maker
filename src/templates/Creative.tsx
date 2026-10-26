@@ -39,7 +39,7 @@ export default function Creative({ cv }: { cv: CV }) {
           </div>
         )}
         <div style={{ marginTop: 10, fontSize: '0.9em', color: 'rgba(255,255,255,0.9)' }}>
-          <ContactLine cv={cv} />
+          <ContactLine cv={cv} textColor="rgba(255,255,255,0.95)" />
         </div>
       </header>
 

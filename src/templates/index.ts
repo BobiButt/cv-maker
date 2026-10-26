@@ -11,6 +11,9 @@ import Executive from './Executive';
 import Creative from './Creative';
 import Academic from './Academic';
 import Tech from './Tech';
+import Clean from './Clean';
+import Portfolio from './Portfolio';
+import ModernSplit from './ModernSplit';
 
 export interface TemplateMeta {
   id: string;
@@ -30,6 +33,9 @@ export const TEMPLATES: TemplateMeta[] = [
   { id: 'creative', name: 'Creative', description: 'Vibrant header with skill progress bars', component: Creative },
   { id: 'academic', name: 'Academic', description: 'Formal serif layout for academia', component: Academic },
   { id: 'tech', name: 'Tech', description: 'Developer-focused with technology stack bars', component: Tech },
+  { id: 'clean', name: 'Clean', description: 'Minimalist, high whitespace, professional', component: Clean },
+  { id: 'portfolio', name: 'Portfolio', description: 'Project-focused with prominent links', component: Portfolio },
+  { id: 'modern-split', name: 'Modern Split', description: 'Two-column with colored sidebar', component: ModernSplit },
 ];
 
 export function getTemplate(id: string): TemplateMeta {

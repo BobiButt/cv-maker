@@ -63,7 +63,7 @@ export const createEmptyCV = (title = 'Untitled CV'): CV => ({
     rtl: false,
     atsMode: false,
     showPhoto: true,
-    printMargin: 8,
+    printMargin: 4,
     printFit: 'one-page',
   },
 });

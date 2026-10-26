@@ -5,9 +5,10 @@ import type { CVSettings } from '../../types/cv';
 
 // CSS px per 1 mm at 96 dpi (the reference the browser uses for mm units).
 const MM_TO_PX = 96 / 25.4;
-// When shrinking to one page, aim a little below the printable height so fixed
-// pixel paddings/margins in the templates cannot push content onto page 2.
-const ONE_PAGE_SAFETY = 0.9;
+// When shrinking to one page, stay a little below the printable height so
+// fixed pixel paddings/margins cannot push content onto page 2.
+const ONE_PAGE_SAFETY = 0.85;
+const MIN_SCALE = 0.3;
 
 const DEFAULT_PRINT_FIT: CVSettings['printFit'] = 'one-page';
 
@@ -19,39 +20,98 @@ export default function PreviewPane() {
   const scaleWrapRef = useRef<HTMLDivElement>(null);
   const [printScale, setPrintScale] = useState(1);
 
-  // Re-measure whenever anything that changes the laid-out height changes.
-  // requestAnimationFrame guarantees the DOM has finished layout so
+  // Wait for images (profile photo etc.) to load before measuring so
   // scrollHeight reflects the real rendered size.
+  const waitForImages = (): Promise<void> => {
+    const imgs = Array.from(
+      document.querySelectorAll('#cv-preview img')
+    ) as HTMLImageElement[];
+    if (imgs.length === 0) return Promise.resolve();
+    return Promise.all(
+      imgs.map(
+        (img) =>
+          new Promise<void>((res) => {
+            if (img.complete) res();
+            else img.addEventListener('load', () => res(), { once: true });
+            img.addEventListener('error', () => res(), { once: true });
+          })
+      )
+    ).then(() => {});
+  };
+
+  // Re-measure whenever anything that changes the laid-out height changes.
+  // Iterates a few times: changing font-size changes height, so re-measure
+  // after applying the scale to make sure everything fits on one page.
   useEffect(() => {
     let scale = 1;
-    if (printFit === 'one-page') {
-      const raf = requestAnimationFrame(() => {
+    let rafId: number;
+    let timeoutId: number;
+
+    const run = async () => {
+      await waitForImages();
+      rafId = requestAnimationFrame(() => {
         const sheet = sheetRef.current;
-        if (sheet) {
-          // The preview wrapper may apply a visual `zoom` (Chrome) which also
-          // scales layout measurements. Undo it so we measure the real size.
-          const wrap = scaleWrapRef.current;
-          const wrapZoom = wrap
-            ? Math.max(parseFloat(getComputedStyle(wrap).zoom || '1') || 1, 0.01)
-            : 1;
-          const pt = parseFloat(getComputedStyle(sheet).paddingTop || '0');
-          const pb = parseFloat(getComputedStyle(sheet).paddingBottom || '0');
-          // Height of the actual content (padding excluded) at real size.
-          const contentHeight = Math.max((sheet.scrollHeight - pt - pb) / wrapZoom, 1);
-          const pageHeightMm = settings.pageSize === 'A4' ? 297 : 279.4;
-          const printableMm = Math.max(pageHeightMm - 2 * settings.printMargin, 20);
-          const printablePx = printableMm * MM_TO_PX;
-          const ratio = printablePx / contentHeight;
-          // Only shrink when the content really overflows one sheet.
-          if (ratio < 1) {
-            scale = Math.max(ratio * ONE_PAGE_SAFETY, 0.45);
-          }
+        if (!sheet) return;
+
+        // Temporarily drop minHeight so scrollHeight reflects real content,
+        // not the 297mm floor. Otherwise short CVs get falsely scaled down.
+        const originalMinHeight = sheet.style.minHeight;
+        sheet.style.minHeight = '0';
+
+        const wrap = scaleWrapRef.current;
+        const wrapZoom = wrap
+          ? Math.max(parseFloat(getComputedStyle(wrap).zoom || '1') || 1, 0.01)
+          : 1;
+        const pt = parseFloat(getComputedStyle(sheet).paddingTop || '0');
+        const pb = parseFloat(getComputedStyle(sheet).paddingBottom || '0');
+        const contentHeight = Math.max(
+          (sheet.scrollHeight - pt - pb) / wrapZoom,
+          1
+        );
+        sheet.style.minHeight = originalMinHeight;
+
+        const pageHeightMm = settings.pageSize === 'A4' ? 297 : 279.4;
+        const printableMm = Math.max(pageHeightMm - 2 * settings.printMargin, 20);
+        const printablePx = printableMm * MM_TO_PX;
+        const ratio = printablePx / contentHeight;
+
+        // Iteratively refine: after scaling font-size, content height changes.
+        // Re-measure up to 3 times to converge on the right scale.
+        let currentScale = 1;
+        if (ratio < 1) {
+          currentScale = Math.max(ratio * ONE_PAGE_SAFETY, MIN_SCALE);
+          // Apply tentative scale and re-measure
+          const prevFontSize = sheet.style.fontSize;
+          sheet.style.fontSize = `${theme.fontSize * currentScale}px`;
+          requestAnimationFrame(() => {
+            const pt2 = parseFloat(getComputedStyle(sheet).paddingTop || '0');
+            const pb2 = parseFloat(getComputedStyle(sheet).paddingBottom || '0');
+            const h2 = Math.max(sheet.scrollHeight - pt2 - pb2, 1);
+            const ratio2 = printablePx / h2;
+            if (ratio2 < 1) {
+              currentScale = Math.max(ratio2 * ONE_PAGE_SAFETY, MIN_SCALE);
+            }
+            sheet.style.fontSize = prevFontSize;
+            scale = currentScale;
+            setPrintScale(scale);
+          });
+        } else {
+          setPrintScale(1);
         }
-        setPrintScale(scale);
       });
-      return () => cancelAnimationFrame(raf);
+    };
+
+    if (printFit === 'one-page') {
+      run();
+      timeoutId = setTimeout(() => {
+        cancelAnimationFrame(rafId);
+      }, 2000);
+      return () => {
+        cancelAnimationFrame(rafId);
+        clearTimeout(timeoutId);
+      };
     }
-    setPrintScale(scale);
+    setPrintScale(1);
   }, [
     printFit,
     settings.pageSize,
@@ -106,7 +166,7 @@ export default function PreviewPane() {
           style={{
             width: '210mm',
             minHeight: '297mm',
-            padding: '16mm 18mm',
+            padding: '10mm 14mm',
             fontFamily: `"${theme.fontFamily}", system-ui, sans-serif`,
             fontSize: `${theme.fontSize}px`,
             lineHeight: theme.lineHeight,

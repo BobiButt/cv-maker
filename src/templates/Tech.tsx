@@ -1,6 +1,6 @@
 import type { CV } from '../types/cv';
 import {
-  PhotoCircle,
+  ContactLine,
   getVisibleSections,
   renderItemBody,
 } from './shared';
@@ -15,30 +15,36 @@ export default function Tech({ cv }: { cv: CV }) {
         style={{
           background: '#0f172a',
           color: '#fff',
-          padding: '24px 20px',
+          padding: '20px 20px',
           marginBottom: 22,
           borderLeft: `6px solid ${theme.accent}`,
+          display: 'flex',
+          alignItems: 'center',
+          gap: 16,
         }}
       >
-        {cv.settings.showPhoto && personal.photo && (
-          <div style={{ marginBottom: 10 }}>
-            <div style={{ border: '3px solid #0f172a', boxShadow: '0 0 0 2px #fff', display: 'inline-block' }}>
-              <PhotoCircle cv={cv} size={64} />
+        <div style={{ flex: 1 }}>
+          {cv.settings.showPhoto && personal.photo && (
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 10 }}>
+              <div style={{ border: '3px solid #0f172a', boxShadow: '0 0 0 2px #fff', width: 70, height: 70, borderRadius: '50%', overflow: 'hidden' }}>
+                <img src={personal.photo} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              </div>
             </div>
-          </div>
-        )}
-        <h1 style={{ fontSize: '2.1em', fontWeight: 800, margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
-          {personal.fullName || 'Your Name'}
-        </h1>
-        {personal.jobTitle && (
-          <div style={{ fontSize: '1.1em', color: theme.accent, marginBottom: 10, fontWeight: 600 }}>
-            {personal.jobTitle}
-          </div>
-        )}
-        <div style={{ fontSize: '0.85em', color: '#94a3b8', display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>{personal.email}</span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>{personal.phone}</span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>{personal.location}</span>
+          )}
+          <h1 style={{ fontSize: '2.1em', fontWeight: 800, margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
+            {personal.fullName || 'Your Name'}
+          </h1>
+          {personal.jobTitle && (
+            <div style={{ fontSize: '1.1em', color: theme.accent, marginBottom: 10, fontWeight: 600 }}>
+              {personal.jobTitle}
+            </div>
+          )}
+        </div>
+        <div style={{ fontSize: '0.85em', color: '#94a3b8', display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>{personal.email}</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>{personal.phone}</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>{personal.location}</div>
+          <ContactLine cv={cv} textColor="#fff" />
         </div>
       </header>
 

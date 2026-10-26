@@ -6,8 +6,9 @@ export function formatRange(start: string, end: string, current: boolean) {
   return `${start || ''} – ${current ? 'Present' : end || ''}`;
 }
 
-export function ContactLine({ cv }: { cv: CV }) {
+export function ContactLine({ cv, textColor }: { cv: CV; textColor?: string }) {
   const p = cv.personal;
+  const linkColor = textColor ?? '#666';
   const parts = [p.email, p.phone, p.location, p.website].filter(Boolean);
   const socialLinks = p.links.filter((l) => l.url).map((l) => (
     <a
@@ -16,9 +17,10 @@ export function ContactLine({ cv }: { cv: CV }) {
       target="_blank"
       rel="noopener noreferrer"
       style={{
-        color: '#666',
+        color: linkColor,
         fontSize: '0.9em',
-        textDecoration: 'underline',
+        fontWeight: 700,
+        textDecoration: 'none',
         marginLeft: '6px',
       }}
     >
@@ -26,7 +28,7 @@ export function ContactLine({ cv }: { cv: CV }) {
     </a>
   ));
   return (
-    <span>
+    <span style={{ color: textColor }}>
       {parts.join('  •  ')}
       {socialLinks.length > 0 && parts.length > 0 && <span>  •  </span>}
       {socialLinks}

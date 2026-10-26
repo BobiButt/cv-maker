@@ -150,6 +150,8 @@ export interface CVSettings {
   atsMode: boolean;
   showPhoto: boolean;
   printMargin: number;
+  /** 'one-page' shrinks text so the CV prints on a single sheet; 'multi-page' keeps normal text size. */
+  printFit: 'one-page' | 'multi-page';
 }
 
 export interface CVMeta {

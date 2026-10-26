@@ -132,6 +132,25 @@ export default function ThemeEditor() {
             Increase if sides get cut when printing.
           </span>
         </label>
+
+        <label className="flex items-center justify-between text-xs text-slate-600">
+          <span className="flex flex-col">
+            Fit CV to one printed page
+            <span className="text-[11px] text-slate-400 mt-0.5">
+              Shrinks text so everything prints on a single sheet.
+            </span>
+          </span>
+          <input
+            type="checkbox"
+            checked={settings.printFit === 'one-page'}
+            onChange={(e) =>
+              updateSettings({
+                printFit: e.target.checked ? ('one-page' as const) : ('multi-page' as const),
+              })
+            }
+            className="rounded border-slate-300"
+          />
+        </label>
       </div>
     </div>
   );

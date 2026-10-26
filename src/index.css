@@ -86,7 +86,7 @@
   /* The sheet itself: fills the printable area, no screen-only chrome. */
   #cv-preview {
     position: static !important;
-    width: auto !important;
+    width: 210mm !important;
     min-height: 0 !important;
     margin: 0 !important;
     padding: 0 !important;

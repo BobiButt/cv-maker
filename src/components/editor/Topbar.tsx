@@ -6,6 +6,7 @@ import {
   FileJson,
   FileCode,
   Share2,
+  Layers,
 } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { useCVStore } from '../../store/cvStore';
@@ -27,6 +28,9 @@ export default function Topbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const settings = useCVStore((s) => s.cv.settings);
+  const updateSettings = useCVStore((s) => s.updateSettings);
 
   const onImportFile = async (file: File) => {
     try {
@@ -107,6 +111,28 @@ export default function Topbar() {
           className="hidden sm:inline-flex px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-100 rounded items-center gap-1.5"
         >
           <Share2 className="w-4 h-4" /> {t('btn.share')}
+        </button>
+
+        {/* Print fit toggle: one page vs multiple pages */}
+        <button
+          onClick={() =>
+            updateSettings({
+              printFit: settings.printFit === 'one-page'
+                ? ('multi-page' as const)
+                : ('one-page' as const),
+            })
+          }
+          title={settings.printFit === 'one-page' ? t('print.fitOnePage') : t('print.fitMultiplePages')}
+          className={`px-2 sm:px-3 py-1.5 text-sm rounded inline-flex items-center gap-1.5 border ${
+            settings.printFit === 'one-page'
+              ? 'border-blue-500 text-blue-600 bg-blue-50'
+              : 'border-slate-200 text-slate-600 hover:bg-slate-100'
+          }`}
+        >
+          <Layers className="w-4 h-4" />
+          <span className="hidden sm:inline">
+            {settings.printFit === 'one-page' ? t('print.onePage') : t('print.multiplePages')}
+          </span>
         </button>
 
         <div className="relative">

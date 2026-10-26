@@ -8,6 +8,9 @@ import TwoColumn from './TwoColumn';
 import AtsPlain from './AtsPlain';
 import Elegant from './Elegant';
 import Executive from './Executive';
+import Creative from './Creative';
+import Academic from './Academic';
+import Tech from './Tech';
 
 export interface TemplateMeta {
   id: string;
@@ -24,6 +27,9 @@ export const TEMPLATES: TemplateMeta[] = [
   { id: 'ats', name: 'ATS Plain', description: 'Black & white, ATS-friendly', component: AtsPlain },
   { id: 'elegant', name: 'Elegant', description: 'Centered header with accent rules', component: Elegant },
   { id: 'executive', name: 'Executive', description: 'Two-column with sidebar for skills & links', component: Executive },
+  { id: 'creative', name: 'Creative', description: 'Vibrant header with skill progress bars', component: Creative },
+  { id: 'academic', name: 'Academic', description: 'Formal serif layout for academia', component: Academic },
+  { id: 'tech', name: 'Tech', description: 'Developer-focused with technology stack bars', component: Tech },
 ];
 
 export function getTemplate(id: string): TemplateMeta {

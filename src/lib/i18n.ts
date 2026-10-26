@@ -68,6 +68,10 @@ export const dict = {
 'sections.hide': 'Hide',
 'sections.show': 'Show',
 'sections.delete': 'Delete',
+    'print.onePage': 'One page',
+    'print.multiplePages': 'Multiple pages',
+    'print.fitOnePage': 'Switch to multiple pages',
+    'print.fitMultiplePages': 'Fit to one page',
   },
   ar: {
     'app.title': 'صانع السيرة الذاتية',
@@ -136,6 +140,10 @@ export const dict = {
 'sections.hide': 'إخفاء',
 'sections.show': 'إظهار',
 'sections.delete': 'حذف',
+    'print.onePage': 'صفحة واحدة',
+    'print.multiplePages': 'صفحات متعددة',
+    'print.fitOnePage': 'التحويل إلى صفحات متعددة',
+    'print.fitMultiplePages': 'ضبط على صفحة واحدة',
   },
 } as const;
 
